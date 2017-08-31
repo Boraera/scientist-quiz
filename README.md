@@ -1,11 +1,11 @@
-# Chemaxon Synergy integration with Node.js
+# ChemAxon Synergy integration with Node.js
 
 Live demo available at https://synergy-demo-app-nodejs.herokuapp.com/
 
 ## Boilerplate
 
 Branch called `boilerplate` contains a simple _Express_ app 
-without the Chemaxon Synergy integration. You can use it as a starting point
+without the ChemAxon Synergy integration. You can use it as a starting point
 if you would like to try the steps of integration yourself.
 
 Boilerplate app has a simple local user management using 
@@ -27,9 +27,9 @@ Swagger api documentation is available on `http://localhost:3000/apidoc`.
 Once you have made changes in code, you can update it with `npm run doc`.
 
 See the differences between `boilerplate` and `master` branches to see
-what has to be done to properly integrate to Chemaxon Synergy.
+what has to be done to properly integrate to ChemAxon Synergy.
 
-## Integration with Chemaxon Synergy
+## Integration with ChemAxon Synergy
 
 First you have to implement some api endpoints. 
 See `src/integration-synergy.js` in the master branch.
@@ -52,7 +52,7 @@ https://<YOUR_HEROKU_APP_NAME>.herokuapp.com, it can be registered on
 https://admin.synergy-demo.cxn.io. Your app info url is: 
 https://<YOUR_HEROKU_APP_NAME>.herokuapp.com/api/synergy/info
 
-## Authentication with Chemaxon Synergy
+## Authentication with ChemAxon Synergy
 
 If your application is deployed and registered, you can implement 
 authentication. Synergy uses Openid Connect to authenticate users.

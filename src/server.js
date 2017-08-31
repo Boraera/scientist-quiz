@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 //mongoDB
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/synergy-demo');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/synergy-nodejs-integration');
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.on('open', function() {
     console.log('Connected to DB.');
@@ -64,5 +64,5 @@ app.get('*', function (req, res) {
 
 //start
 app.listen(config.port, function () {
-    console.log('Chemaxon Synergy integration demo app is running on '+config.url)
+    console.log('ChemAxon Synergy integration demo app is running on '+config.url)
 });

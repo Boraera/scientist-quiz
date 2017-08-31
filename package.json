@@ -1,7 +1,7 @@
 {
-  "name": "synergy-demo-app-nodejs",
+  "name": "synergy-nodejs-integration",
   "version": "1.0.0",
-  "description": "Chemaxon Synergy integration with Node.js",
+  "description": "ChemAxon Synergy integration with Node.js",
   "main": "server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elcsiga/synergy-demo-app-nodejs.git"
+    "url": "ssh://git@phabricator.chemaxon.com:9999/source/synergy-nodejs-integration.git"
   },
   "keywords": [
     "chemaxon",
@@ -20,12 +20,11 @@
     "integration",
     "authentication"
   ],
-  "author": "elcsiga",
+  "author": "Andras Kovacs",
+  "contributors": [
+    "Attila Biczo"
+  ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/elcsiga/synergy-demo-app-nodejs/issues"
-  },
-  "homepage": "https://github.com/elcsiga/synergy-demo-app-nodejs#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
     "copyfiles": "^1.2.0",
