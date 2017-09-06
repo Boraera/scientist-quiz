@@ -38,6 +38,7 @@ jspm_packages
 
 
 .env
+builds
 
 .idea
 # ui/dist
