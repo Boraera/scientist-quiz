@@ -1,5 +1,3 @@
-
-const User = require('./userModel');
 module.exports = function(app) {
 
     /**

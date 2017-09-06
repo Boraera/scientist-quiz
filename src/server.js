@@ -1,5 +1,5 @@
 const path = require('path');
-const config = require('../config');
+require('dotenv').config();
 
 //express
 const express = require('express');
@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 //mongoDB
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/synergy-nodejs-integration');
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.on('open', function() {
     console.log('Connected to DB.');
@@ -22,7 +22,7 @@ app.use('/apidoc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //cors headers
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", config.uiUrl);
+    res.header("Access-Control-Allow-Origin", process.env.URL);
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -55,14 +55,14 @@ require('./authentication-synergy')(app, passport);
 require('./integration-synergy')(app);
 
 //static resources like app icon
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname + '/../public')));
 
 //ui
-app.get('*', function (req, res) {
+app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 //start
-app.listen(config.port, function () {
-    console.log('ChemAxon Synergy integration demo app is running on '+config.url)
+app.listen(process.env.PORT, function () {
+    console.log('ChemAxon Synergy integration demo app is running on '+process.env.URL)
 });

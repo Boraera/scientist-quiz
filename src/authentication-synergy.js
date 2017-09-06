@@ -1,5 +1,4 @@
 var passport = require('passport');
-var config = require('../config');
 var User = require('./userModel');
 
 var OidcStrategy = require('passport-openidconnect').Strategy;
@@ -12,7 +11,7 @@ module.exports = function(app, passport) {
         issuer: synergyUrl,
         authorizationURL: synergyUrl + '/oauth/authorize',
         tokenURL: synergyUrl + '/oauth/token',
-        callbackURL: config.url + '/auth/synergy/callback',
+        callbackURL: process.env.URL + '/auth/synergy/callback',
         skipUserProfile: true,
         clientID: process.env.SYNERGY_CLIENT_ID,
         clientSecret: process.env.SYNERGY_CLIENT_SECRET

@@ -1,5 +1,3 @@
-var config = require('../config');
-var User = require('./userModel');
 module.exports = function(app) {
 
     /**
@@ -23,10 +21,25 @@ module.exports = function(app) {
     app.get('/api/synergy/info', function (req, res) {
         res.send({
             displayName: 'NodeJS Demo App',
-            address: config.url,
-            iconUrl: config.url + '/icon.png',
+            address: process.env.URL,
             directlyAccessed: true,
-            healthCheckUrl: config.url + '/api/synergy/health'
+            identities: [
+                {category: 'application', type: 'example'}
+            ],
+            features: [
+                {
+                    namespace: 'synergy/app-info', attributes: {
+                    url: process.env.URL + '/api/synergy/info' }
+                },
+                {
+                    namespace: 'synergy/health', attributes: {
+                    url: process.env.URL + '/api/synergy/health' }
+                },{
+                    namespace: 'synergy/icon', attributes: {
+                        url: process.env.URL + '/icon.png' }
+                }
+            ]
+
         });
     });
 };

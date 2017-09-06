@@ -36,5 +36,8 @@ jspm_packages
 
 # Created by .ignore support plugin (hsz.mobi)
 
+
+.env
+
 .idea
 # ui/dist
