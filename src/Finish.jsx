@@ -2,19 +2,22 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import $ from 'jquery';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import axios from 'axios';
 
 
 export default class Finish extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {marvinJSNameSpace: null};
+        this.state = {
+            images: null
+        };
     }
 
     componentDidMount() {
         let sketcherAttributes = {
             id: 2,
             src: 'marvinjs/editor.html',
-            name: 'marvin',
+            name: 'marvin-hidden',
             'data-toolbars': 'markush'
         };
 
@@ -27,15 +30,11 @@ export default class Finish extends React.Component {
                     chiralFlagVisible: false
                 });
 
-                marvinNameSpace.sketcherInstance.on('molchange', () => {
-                    console.log('molchange')
-                });
-
                 marvinNameSpace.onReady(() => {
-                    this.setState({marvinJSNameSpace: marvinNameSpace});
-                    console.log('marvinjs ready')
+                    this.marvinJSNameSpace = marvinNameSpace;
+                    this.createExpectedAnswerList();
+                    this.createActualAnswerList();
                 });
-                // marvinNameSpace.Sketch.license(this.licenseUrl);
             },
             (error) => {
                 alert(`Cannot retrieve marvin instance from iframe:${error}`);
@@ -44,28 +43,91 @@ export default class Finish extends React.Component {
     }
 
     render() {
-        const image = this.state.marvinJSNameSpace ? this.createExporter().render(`
-        Mrv17f0 11031716102D          
-      
-        1  0  0  0  0  0            999 V2000
-         -1.0045    0.4911    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
-      M  END`) : null;
-
         return (
             <div>
                 <div ref={(element) => this.wrapper = element}></div>
                 <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Question</TableCell>
+                            <TableCell>Your answer</TableCell>
+                            <TableCell>Correct answer</TableCell>
+                            <TableCell>Result</TableCell>
+                        </TableRow>
+                    </TableHead>
                     <TableBody>
                         {this.props.answers.map((answer, index) => (
                             <TableRow>
                                 <TableCell>{this.props.questions[index]}</TableCell>
-                                <TableCell>{image}</TableCell>
+                                <TableCell>{this.state.actualAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.actualAnswerImages[index]}}></div> : null}</TableCell>
+                                <TableCell>{this.state.expectedAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.expectedAnswerImages[index]}}></div> : null}</TableCell>
+                                <TableCell></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
-                </Table> 
+                </Table>
             </div>
         )
+    }
+
+    createActualAnswerList() {
+        if (!this.props.actualAnswers) {
+            return; null;
+        }
+
+        const promises = this.props.actualAnswers.map((answer, index) => {
+            return axios({
+                method: 'post',
+                url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
+                data: {
+                    "structure": answer,
+                    "parameters": "mol"
+                }
+            })
+            .then(
+                (response) => {
+                    return response.data.structure;
+                }
+            )
+            .then((mol) => {
+                return this.createExporter().render(mol)
+            })
+
+        });
+
+        Promise.all(promises)
+        .then(values => {
+            this.setState({actualAnswerImages: values});
+        })
+        .catch(e => console.log(e));
+    }
+
+    createExpectedAnswerList() {
+        const promises = this.props.answers.map((answer, index) => {
+            return axios({
+                method: 'post',
+                url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
+                data: {
+                    "structure": answer,
+                    "parameters": "mol"
+                }
+            })
+            .then(
+                (response) => {
+                    return response.data.structure;
+                }
+            )
+            .then((mol) => {
+                return this.createExporter().render(mol)
+            })
+
+        });
+
+        Promise.all(promises)
+        .then(values => {
+            this.setState({expectedAnswerImages: values});
+        })
+        .catch(e => console.log(e));
     }
 
     createExporter() {
@@ -80,10 +142,10 @@ export default class Finish extends React.Component {
         //     services['stereoinfows'] = defaultServices['stereoinfows']; // enable stereo calculation
         // }
         var params = {
-                'imageType': 'svg', // type of output image
-                'inputFormat': 'smiles' // renderer will expect molecule source in this format
+                'imageType': 'image/svg', // type of output image
+                'inputFormat': 'mol' // renderer will expect molecule source in this format
                 // 'services': services // to resolve any molecule format and be able to calculate stereo info
         }
-        return new this.state.marvinJSNameSpace.ImageExporter(params);
+        return new this.marvinJSNameSpace.ImageExporter(params);
     }
 };

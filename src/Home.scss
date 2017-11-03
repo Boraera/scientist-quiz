@@ -5,6 +5,17 @@ iframe[name='marvin'] {
     height: 100%;
 }
 
+iframe[name='marvin-hidden'] {
+    width: 0;
+    height: 0;
+    display: initial;
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+    margin: 0;
+    padding: 0;
+}
+
 .marvin-js-wrapper {
     width: 90%;
     height: 500px;
