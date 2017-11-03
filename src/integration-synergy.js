@@ -36,7 +36,8 @@ module.exports = function(app) {
                     url: process.env.URL + '/api/synergy/health' }
                 },{
                     namespace: 'synergy/icon', attributes: {
-                        url: process.env.URL + '/icon.png' }
+                        /*url: process.env.URL + '/icon.png' }*/
+                        url: 'http://findicons.com/files/icons/2166/oxygen/128/applications_science.png' }
                 }
             ]
 
