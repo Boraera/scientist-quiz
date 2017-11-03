@@ -5,19 +5,15 @@
   "main": "server.js",
   "scripts": {
     "dist": "npm run copy:resources && npm run copy:scripts && npm run copy:doc && npm pack tmp && npm run copy:package && npm run clean",
-
     "copy:resources": "node node_modules/cpy-cli/cli.js public/* tmp/public",
     "copy:scripts": "node node_modules/cpy-cli/cli.js src/* tmp/src && node node_modules/cpy-cli/cli.js package.json tmp",
     "copy:doc": "node node_modules/cpy-cli/cli.js swagger*.json tmp",
     "copy:package": "node node_modules/cpy-cli/cli.js synergy-nodejs-integration-*.tgz builds",
-
     "clean": "node node_modules/del-cli/cli.js './tmp' 'synergy-nodejs-integration-*.tgz'",
-
     "start": "node src/server.js",
     "start:watch": "nodemon src/server.js",
     "start:dist": "npm install && npm update && pm2 start src/server.js --name synergy-nodejs-integration",
     "stop:dist": "pm2 stop synergy-nodejs-integration",
-
     "doc": "node node_modules/swagger-jsdoc/bin/swagger-jsdoc -d swaggerDef.json src/**/*.js -o swagger.json",
     "doc:watch": "node node_modules/swagger-jsdoc/bin/swagger-jsdoc -d swaggerDef.json src/**/*.js -o swagger.json -w",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-	"body-parser": "^1.17.1",
+    "body-parser": "^1.17.1",
     "copyfiles": "^1.2.0",
     "express": "^4.15.2",
     "express-session": "^1.15.2",

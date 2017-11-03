@@ -6,7 +6,12 @@ export default function(props) {
     return (
         <Table>
             <TableBody>
-                {() => props.answers.map((answer, index) => (<TableRow></TableRow>))}
+                {props.answers.map((answer, index) => (
+                    <TableRow>
+                        <TableCell>{props.questions[index]}</TableCell>
+                        <TableCell>{answer}</TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
         </Table> 
     )
