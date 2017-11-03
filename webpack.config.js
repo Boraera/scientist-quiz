@@ -23,14 +23,14 @@ module.exports = function createWebpackConfig() {
                     test: /\.scss$/,
                     use: ExtractTextPlugin.extract({
                         use: ["css-loader", "sass-loader"],
-                        fallback: "style"
+                        fallback: "style-loader"
                     })
                 },
                 {
                     test: /\.css$/,
                     use: ExtractTextPlugin.extract({
                         use: ["css-loader"],
-                        fallback: "style"
+                        fallback: "style-loader"
                     })
                 },
                 {

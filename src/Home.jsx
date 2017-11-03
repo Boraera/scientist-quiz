@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import $ from 'jquery';
 require('./marvinjs_launcher');
+require('./Home.scss');
 import Promise from 'es6-promise';
 
 export default class Home extends React.Component {
@@ -42,11 +43,7 @@ export default class Home extends React.Component {
         return (
             <div>
                 <div>Title</div>
-                <div
-                    style={{
-                        width: '500px',
-                        height: '500px'
-                    }}
+                <div className='marvin-js-wrapper'
                     ref={(element) => this.wrapper = element}>
                 </div>
             </div>
