@@ -1,7 +1,7 @@
 {
-  "name": "synergy-nodejs-integration",
-  "version": "1.3.4",
-  "description": "ChemAxon Synergy integration with Node.js",
+  "name": "scientific-quiz",
+  "version": "1.0.0",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "dist": "npm run copy:resources && npm run copy:scripts && npm run copy:doc && npm pack tmp && npm run copy:package && npm run clean",
@@ -19,26 +19,13 @@
     "stop:dist": "pm2 stop synergy-nodejs-integration",
 
     "doc": "node node_modules/swagger-jsdoc/bin/swagger-jsdoc -d swaggerDef.json src/**/*.js -o swagger.json",
-    "doc:watch": "node node_modules/swagger-jsdoc/bin/swagger-jsdoc -d swaggerDef.json src/**/*.js -o swagger.json -w"
+    "doc:watch": "node node_modules/swagger-jsdoc/bin/swagger-jsdoc -d swaggerDef.json src/**/*.js -o swagger.json -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@phabricator.chemaxon.com:9999/source/synergy-nodejs-integration.git"
-  },
-  "keywords": [
-    "chemaxon",
-    "synergy",
-    "openid",
-    "integration",
-    "authentication"
-  ],
-  "author": "Andras Kovacs",
-  "contributors": [
-    "Attila Biczo"
-  ],
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.17.1",
+	"body-parser": "^1.17.1",
     "copyfiles": "^1.2.0",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
@@ -48,11 +35,27 @@
     "passport-openidconnect": "0.0.2",
     "swagger-jsdoc": "^1.9.2",
     "swagger-ui-express": "^1.0.7",
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "es6-promise": "^4.1.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "history": "^4.7.2",
+    "jquery": "^3.2.1",
+    "marvinjs": "git+ssh://git.chemaxon.com:9999/marvinjs/marvinjs-dist.git",
+    "material-ui": "^1.0.0-beta.19",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
+    "webpack-dev-server": "^2.9.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
     "cpy-cli": "^1.0.1",
-    "del-cli": "^0.2.0"
+    "del-cli": "^0.2.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.8.1"
   }
 }
