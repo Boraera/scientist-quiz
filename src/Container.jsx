@@ -4,7 +4,7 @@ import Home from './Home';
 import Finish from './Finish';
 import Results from './Results';
 
-const answers = ['ccc', 'ccc', 'cco', 'cpon', 'ccccc1', 'ccccc'];
+const answers = ['ccc', 'ccc', 'cco', 'cpon', 'ccccc', 'ccccc'];
 const questions = [
     'Draw the simplest carboxylic acid (formic acid)!',
     'Hydrogenase this (E)-2-butene!',
@@ -15,13 +15,25 @@ const questions = [
 ];
 
 export default class Container extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            actualAnswers: null
+        }
+    }
     render() {
         return (
             <div>
-                <Route exact path="/" component={() => <Home questions={questions} finish={console.log} ></Home>} />
-                <Route path="/finish" component={() => <Finish questions={questions} answers={answers} ></Finish>} />
-                <Route path="/results" component={Results} />
+                {this.state.actualAnswers ?
+                 <Finish questions={questions} answers={answers} actualAnswers={this.state.actualAnswers} ></Finish> :
+                 <Home questions={questions} finish={this.finish.bind(this)} ></Home>}
             </div>
         );
+    }
+
+    finish(answers) {
+        this.setState({
+            actualAnswers: answers
+        });
     }
 };
