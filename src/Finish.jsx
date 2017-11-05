@@ -3,13 +3,14 @@ import ReactDom from 'react-dom';
 import $ from 'jquery';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import axios from 'axios';
-
+require('./Finish.scss');
 
 export default class Finish extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: null
+            images: null,
+            actualStructures: null
         };
     }
 
@@ -57,9 +58,9 @@ export default class Finish extends React.Component {
                     </TableHead>
                     <TableBody>
                         {this.props.answers.map((answer, index) => (
-                            <TableRow>
+                            <TableRow className={this.isCorrect(index) ? 'row-correct' : 'row-incorrect'}>
                                 <TableCell>{this.props.questions[index]}</TableCell>
-                                <TableCell>{this.state.actualAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.actualAnswerImages[index]}}></div> : null}</TableCell>
+                                <TableCell>{this.state.actualAnswerImages  ? <div dangerouslySetInnerHTML={{__html: this.state.actualAnswerImages[index]}}></div> : null}</TableCell>
                                 <TableCell>{this.state.expectedAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.expectedAnswerImages[index]}}></div> : null}</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
@@ -70,34 +71,48 @@ export default class Finish extends React.Component {
         )
     }
 
+    isCorrect(index) {
+        if (!this.state.actualStructures) {
+            return false;
+        }
+
+        return this.state.actualStructures[index] === this.props.answers[index];
+    }
+
     createActualAnswerList() {
         if (!this.props.actualAnswers) {
             return; null;
         }
 
+        const structures = [];
+
         const promises = this.props.actualAnswers.map((answer, index) => {
+
             return axios({
                 method: 'post',
                 url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
                 data: {
                     "structure": answer,
-                    "parameters": "mol"
+                    "parameters": "cxsmiles:u-e"
                 }
             })
             .then(
                 (response) => {
+                    structures[index] = response.data.structure;
                     return response.data.structure;
                 }
             )
-            .then((mol) => {
-                return this.createExporter().render(mol)
-            })
-
+            .then((smiles) => {
+                return this.createExporter().render(answer)
+            });
         });
 
         Promise.all(promises)
         .then(values => {
-            this.setState({actualAnswerImages: values});
+            this.setState({
+                actualAnswerImages: values,
+                actualStructures: structures
+            });
         })
         .catch(e => console.log(e));
     }

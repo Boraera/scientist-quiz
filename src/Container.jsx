@@ -4,7 +4,7 @@ import Home from './Home';
 import Finish from './Finish';
 import Results from './Results';
 
-const answers = ['ccc', 'ccc', 'cco', 'cpon', 'ccccc', 'ccccc'];
+const answers = ['c:c:c', 'c:c:c', 'c:c:o |lp:2:2|', 'c:p:o:[nH2] |lp:1:1,2:1,3:1|', 'c:c:c:c:c', 'c:c:c:c:c'];
 const questions = [
     'Draw the simplest carboxylic acid (formic acid)!',
     'Hydrogenase this (E)-2-butene!',
