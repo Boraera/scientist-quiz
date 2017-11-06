@@ -4,14 +4,10 @@ import Home from './Home';
 import Finish from './Finish';
 import Results from './Results';
 
-const answers = ['c:c:c', 'c:c:c', 'c:c:o |lp:2:2|', 'c:p:o:[nH2] |lp:1:1,2:1,3:1|', 'c:c:c:c:c', 'c:c:c:c:c'];
+const answers = ['OC=O', 'Cc1ccc(C)cc1'];
 const questions = [
     'Draw the simplest carboxylic acid (formic acid)!',
-    'Hydrogenase this (E)-2-butene!',
-    'Perform oxidation on butanol!',
-    'Draw p-xylene!',
-    'Draw the 2-butene isomer which has the higher melting point!',
-    'Draw the ester which has raspberry odor!'
+    'Draw p-xylene!'
 ];
 
 export default class Container extends React.Component {
