@@ -12,15 +12,10 @@ module.exports = function(app) {
         });
     });
     
-    app.get('/students/login', function (req, res) {
-        res.send({
-            who: 'I am a student.'
-        });
-    });
     
     app.get('/teachers/login', function (req, res) {
         res.send({
-            who: 'I am a teacher.'
+            info: 'This is a page for teacher. The functionality is coming later. :)'
         });
     });
 
@@ -55,7 +50,7 @@ module.exports = function(app) {
                     namespace: "synergy/web", attributes: {
                         mainEntryPoint: "http://localhost:8102/login",
                         modules: [
-                               {name:'BioChemLearnie for students', entryPoint: '/students/login'},
+                               {name:'BioChemLearnie for students', entryPoint: '/'},
                                {name:'BioChemLearnie for teachers', entryPoint: '/teachers/login'}
                         ]
                     }
