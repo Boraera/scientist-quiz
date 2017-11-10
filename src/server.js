@@ -64,6 +64,6 @@ app.get('/', function (req, res) {
 });
 
 //start
-app.listen('8764', function () {
+app.listen(process.env.PORT, function () {
     console.log('ChemAxon Synergy integration demo app is running on '+process.env.URL)
 });
