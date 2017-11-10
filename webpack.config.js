@@ -10,8 +10,8 @@ module.exports = function createWebpackConfig() {
             app: ['./src/app.jsx']
         },
         output: {
-            path: path.resolve(__dirname, 'build/bundle'),
-            filename: 'js/[name].js'
+            path: path.resolve(__dirname, 'build'),
+            filename: 'bundle/js/[name].js'
         },
         resolve: {
             extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.tsx', '.css', '.jsx']
@@ -49,7 +49,7 @@ module.exports = function createWebpackConfig() {
         },
         plugins: [
             new ExtractTextPlugin({
-                filename: '[name].css',
+                filename: 'bundle/[name].css',
                 allChunks: true
             })
         ],

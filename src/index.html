@@ -1,71 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Synergy Demo App</title>
-    <meta name="description" content="ChemAxon Synergy integration with Node.js">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="shortcut icon" type="image/png" href="icon.png"/>
-    <link rel="stylesheet" type="text/css" href="styles.css"/>
-</head>
+<html>
+<title>Scientific quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+<link rel="stylesheet" href="app.css">
+<style>
+ body {
+     font-family: Roboto;
+ }
+</style>
 <body>
-    <img src='icon.png'/>
-
-    <h3>ChemAxon Synergy integration with Node.js</h3>
-
-    <p id="error"></p>
-
-    <div id="notLoggedIn">
-        <a href="/auth/synergy" class="button">Sign in with Synergy</a>
-    </div>
-
-    <div id="loggedIn">
-        <p>Welcome, <span id="userName"></span>! </p>
-        <p><button id="signOut">Sign out</button></p>
-        <pre></pre>
-    </div>
-
-    <div class="footer">
-        <p><a href = '/apidoc'>Api documentation</a></p>
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-        $.ajax( "/auth/user" )
-            .done(function(response) {
-                if (response) {
-                    $('#userName').text(response.email);
-                    $('pre').text('User: ' + JSON.stringify(response, null, 2));
-                    $('#signOut').click( function(){
-                        $.ajax( "/auth/logout" )
-                            .done(function(response) {
-                                if (response) {
-                                    alert('Good bye, ' + response.email + '! \n'
-                                        + 'Now you are logged out from this app only. \n'
-                                        + 'Do not forget to log out from Synergy, too!');
-                                    window.location.href = '/';
-                                }
-                                else {
-                                    $('#notLoggedIn').fadeIn();
-                                }
-                            })
-                            .fail(function(err) {
-                                console.error(err);
-                            });
-                    });
-                    $('#loggedIn').fadeIn();
-                }
-                else {
-                    $('#notLoggedIn').fadeIn();
-                }
-            })
-            .fail(function(err) {
-                console.error(err);
-            });
-
-        if (window.location.search.indexOf('?error=') >= 0) {
-            $('#error').text(decodeURI( window.location.search.replace('?error=', '')));
-        }
-    </script>
+<div id='root'></div>
+<script src="js/app.js"></script>
 </body>
-</html>

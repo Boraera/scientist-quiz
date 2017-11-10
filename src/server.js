@@ -55,14 +55,15 @@ require('./authentication-synergy')(app, passport);
 require('./integration-synergy')(app);
 
 //static resources like app icon
-app.use(express.static(path.join(__dirname + '/../public')));
+app.use(express.static(path.join(__dirname + '/../build')));
+app.use(express.static(path.join(__dirname + '/../')));
 
 //ui
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/../index.html'));
 });
 
 //start
-app.listen(process.env.PORT, function () {
+app.listen('8764', function () {
     console.log('ChemAxon Synergy integration demo app is running on '+process.env.URL)
 });
