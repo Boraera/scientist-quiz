@@ -16,7 +16,7 @@ mongoose.connection.on('open', function() {
 });
 
 var studysetRouter = require('./routes/studysetRouter');
-const Studysets = require('./models/studysets');
+const Studysets = require('./models/Studysets');
 app.use('/studysets', studysetRouter);
 
 //live api documentation with Swagger - available at /apidoc

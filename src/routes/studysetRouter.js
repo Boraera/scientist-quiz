@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const Studysets = require('../models/studysets');
+const Studysets = require('../models/Studysets');
 
 const studysetRouter = express.Router();
 
