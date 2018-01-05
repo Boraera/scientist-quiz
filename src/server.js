@@ -7,13 +7,17 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-//mongoDB
+//mongo DB
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.on('open', function() {
-    console.log('Connected to DB.');
+    console.log('Connected to Mongo DB.');
 });
+
+var studysetRouter = require('./routes/studysetRouter');
+const Studysets = require('./models/studysets');
+app.use('/studysets', studysetRouter);
 
 //live api documentation with Swagger - available at /apidoc
 const swaggerUi = require('swagger-ui-express');

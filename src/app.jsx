@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import Container from './Container';
 import { BrowserRouter } from 'react-router-dom'
 
+
+
 const answers = ['ccc', 'ccc', 'cco', 'cpon', 'ccccc', 'ccccc'];
 const questions = [
     'Draw the simplest carboxylic acid (formic acid)!',
@@ -12,6 +14,7 @@ const questions = [
     'Draw the 2-butene isomer which has the higher melting point!',
     'Draw the ester which has raspberry odor!'
 ];
+
 
 render((
     <BrowserRouter>

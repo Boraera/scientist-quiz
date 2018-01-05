@@ -92,7 +92,6 @@ import { Promise } from 'es6-promise';
                 } else {
                     reject('Unable to find marvin package, cannot retrieve sketcher instance');
                 }
-
             });
         }
     }

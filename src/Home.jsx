@@ -13,6 +13,7 @@ export default class Home extends React.Component {
             questionIndex: 0,
             answers: []
         };
+        
     }
 
     componentDidMount() {
@@ -23,6 +24,7 @@ export default class Home extends React.Component {
             'data-toolbars': 'markush'
         };
 
+        
         const container = ReactDom.findDOMNode(this.wrapper);
         $(container).append($('<iframe>', sketcherAttributes));
 
@@ -38,7 +40,7 @@ export default class Home extends React.Component {
 
                 marvinNameSpace.onReady(() => {
                     this.marvinJSNameSpace = marvinNameSpace;
-                    console.log('marvinjs ready')
+                    console.log('marvin js ready');
                 });
                 // marvinNameSpace.Sketch.license(this.licenseUrl);
             },
@@ -49,23 +51,32 @@ export default class Home extends React.Component {
     }
 
     render() {
+        //console.log(this.props.studysets)
         return (
-            <div>
-                <h3>{this.props.questions[this.state.questionIndex]}</h3>
-                <div className='marvin-js-wrapper'
-                    ref={(element) => this.wrapper = element}>
+            this.props.studysets.length > 0 ? 
+                <div>
+                    <h3>{this.props.studysets[0].exercises[this.state.questionIndex].question}</h3>
+                    <div className='marvin-js-wrapper'
+                        ref={(element) => this.wrapper = element}>
+                    </div>
+                    <div style={{float: 'right', margin: 20}}>
+                        <Button raised color="primary" onClick={this.next.bind(this)}>Next</Button>
+                    </div>
                 </div>
-                <div style={{float: 'right', margin: 20}}>
-                    <Button raised color="primary" onClick={this.next.bind(this)}>Next</Button>
-                </div>
-            </div>
+            : 
+                <div>
+                    <div>Waiting...</div>
+                    <div className='marvin-js-wrapper'
+                        ref={(element) => this.wrapper = element}>
+                    </div>
+                </div>                    
         );
     }
 
     next() {
         this.marvinJSNameSpace.sketcherInstance.exportStructure('mol').then(answer => {
             let answers = this.state.answers.concat([answer]);
-            if (this.state.questionIndex === this.props.questions.length - 1) {
+            if (this.state.questionIndex === this.props.studysets[0].exercises.length - 1) {
                 this.props.finish(answers);
             } else {
                 this.setState({
