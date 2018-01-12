@@ -53,14 +53,16 @@ export default class Home extends React.Component {
     render() {
         //console.log(this.props.studysets)
         return (
-            this.props.studysets.length > 0 ? 
+            this.props.studysets.length > 0 ?  
                 <div>
                     <h3>{this.props.studysets[0].exercises[this.state.questionIndex].question}</h3>
                     <div className='marvin-js-wrapper'
                         ref={(element) => this.wrapper = element}>
                     </div>
                     <div style={{float: 'right', margin: 20}}>
-                        <Button raised color="primary" onClick={this.next.bind(this)}>Next</Button>
+                        <Button raised color="primary" onClick={this.next.bind(this)}>
+                        {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Submit'}
+                        </Button>
                     </div>
                 </div>
             : 
