@@ -45,7 +45,6 @@ export default class Home extends React.Component {
                 });
 
                 this.importIntoMarvinJS(this.getCurrentStarter());
-                // marvinNameSpace.Sketch.license(this.licenseUrl);
             },
             (error) => {
                 alert(`Cannot retrieve marvin instance from iframe:${error}`);
@@ -58,18 +57,17 @@ export default class Home extends React.Component {
     }
 
     render() {
-        //console.log(this.props.studysets)
         return (
-            this.props.studysets.length > 0 ?
-            
+            this.props.studyset ?
+
                 <div>
-                    <h3>{this.props.studysets[0].exercises[this.state.questionIndex].question}</h3>
+                    <h3>{this.props.studyset.exercises[this.state.questionIndex].question}</h3>
                     <div className='marvin-js-wrapper'
                         ref={(element) => this.wrapper = element}>
                     </div>
                     <div style={{float: 'right', margin: 20}}>
                         <Button raised color="primary" onClick={this.next.bind(this)}>
-                        {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Submit'}
+                        {(this.state.questionIndex < this.props.studyset.exercises.length-1) ? 'Next' : 'Submit'}
                         </Button>
                     </div>
                 </div>
@@ -79,14 +77,14 @@ export default class Home extends React.Component {
                     <div className='marvin-js-wrapper'
                         ref={(element) => this.wrapper = element}>
                     </div>
-                </div>                    
+                </div>
         );
     }
 
     next() {
         this.marvinJSNameSpace.sketcherInstance.exportStructure('mol').then(answer => {
             let answers = this.state.answers.concat([answer]);
-            if (this.state.questionIndex === this.props.studysets[0].exercises.length - 1) {
+            if (this.state.questionIndex === this.props.studyset.exercises.length - 1) {
                 this.props.finish(answers);
             } else {
                 this.setState({
@@ -99,14 +97,13 @@ export default class Home extends React.Component {
     }
 
     getCurrentStarter() {
-        if (this.props.studysets.length == 0) {
+        if (!this.props.studyset) {
             return null;
         }
-        return this.props.studysets[0].exercises[this.state.questionIndex].question
+        return this.props.studyset.exercises[this.state.questionIndex].question
     }
 
     importIntoMarvinJS(smiles) {
-        // const starter = this.props.studysets[0].exercises[this.state.questionIndex].question;
         if (smiles) {
             axios({
                 method: 'post',
