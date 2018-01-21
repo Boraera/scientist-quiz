@@ -42,6 +42,8 @@ export default class Home extends React.Component {
                 marvinNameSpace.onReady(() => {
                     this.marvinJSNameSpace = marvinNameSpace;
                     console.log('marvin js ready');
+
+                    this.forceUpdate();
                 });
 
                 this.importIntoMarvinJS(this.getCurrentStarter());
@@ -102,12 +104,12 @@ export default class Home extends React.Component {
         if (this.props.studysets.length == 0) {
             return null;
         }
-        return this.props.studysets[0].exercises[this.state.questionIndex].question
+        return this.props.studysets[0].exercises[this.state.questionIndex].starter
     }
 
     importIntoMarvinJS(smiles) {
         // const starter = this.props.studysets[0].exercises[this.state.questionIndex].question;
-        if (smiles) {
+        if (smiles && this.marvinJSNameSpace) {
             axios({
                 method: 'post',
                 url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
