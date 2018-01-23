@@ -13,6 +13,7 @@ export default class Home extends React.Component {
             questionIndex: 0,
             answers: []
         };
+        this.next = this.next.bind(this);
         
     }
 
@@ -60,7 +61,7 @@ export default class Home extends React.Component {
                         ref={(element) => this.wrapper = element}>
                     </div>
                     <div style={{float: 'right', margin: 20}}>
-                        <Button raised color="primary" onClick={this.next.bind(this)}>
+                        <Button raised color="primary" onClick={this.next}>
                         {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Submit'}
                         </Button>
                     </div>

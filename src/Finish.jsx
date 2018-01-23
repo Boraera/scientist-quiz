@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
 import $ from 'jquery';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import axios from 'axios';
@@ -10,12 +11,15 @@ export default class Finish extends React.Component {
         super(props);
         this.state = {
             images: null,
-            actualStructures: null
+            actualStructures: null,
+            actualAnswerImages: null,
+            expectedAnswerImages: null
         };
+        this.isCorrect = this.isCorrect.bind(this);
     }
 
     componentDidMount() {
-        let sketcherAttributes = {
+        const sketcherAttributes = {
             id: 2,
             src: 'marvinjs/editor.html',
             name: 'marvin-hidden',
@@ -57,9 +61,9 @@ export default class Finish extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.answers.map((answer, index) => (
-                            <TableRow className={this.isCorrect(index) ? 'row-correct' : 'row-incorrect'}>
-                                <TableCell>{this.props.questions[index]}</TableCell>
+                        {this.props.exercises.map((exercise, index) => (
+                            <TableRow key={index} className={this.isCorrect(index) ? 'row-correct' : 'row-incorrect'}>
+                                <TableCell>{exercise.question}</TableCell>
                                 <TableCell>{this.state.actualAnswerImages  ? <div dangerouslySetInnerHTML={{__html: this.state.actualAnswerImages[index]}}></div> : null}</TableCell>
                                 <TableCell>{this.state.expectedAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.expectedAnswerImages[index]}}></div> : null}</TableCell>
                                 <TableCell></TableCell>
@@ -72,95 +76,66 @@ export default class Finish extends React.Component {
     }
 
     isCorrect(index) {
-        if (!this.state.actualStructures) {
-            return false;
-        }
-
-        return this.state.actualStructures[index] === this.props.answers[index];
+        return this.state.actualStructures && this.state.actualStructures[index] === this.props.exercises[index].answer;
     }
 
-    createActualAnswerList() {
-        if (!this.props.actualAnswers) {
-            return; null;
-        }
-
-        const structures = [];
-
-        const promises = this.props.actualAnswers.map((answer, index) => {
-
-            return axios({
-                method: 'post',
-                url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
-                data: {
-                    "structure": answer,
-                    "parameters": "cxsmiles:u-e"
-                }
-            })
-            .then(
-                (response) => {
-                    structures[index] = response.data.structure;
-                    return response.data.structure;
-                }
-            )
-            .then((smiles) => {
-                return this.createExporter().render(answer)
-            });
-        });
-
-        Promise.all(promises)
-        .then(values => {
-            this.setState({
-                actualAnswerImages: values,
-                actualStructures: structures
-            });
+    async saveActualStructuresToSmiles(answer) {
+        const response = await axios({
+            method: 'post',
+            url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
+            data: {
+                "structure": answer,
+                "parameters": "cxsmiles:u-e"
+            }
         })
-        .catch(e => console.log(e));
+        return (response.data.structure);
     }
 
-    createExpectedAnswerList() {
-        const promises = this.props.answers.map((answer, index) => {
-            return axios({
-                method: 'post',
-                url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
-                data: {
-                    "structure": answer,
-                    "parameters": "mol"
-                }
-            })
-            .then(
-                (response) => {
-                    return response.data.structure;
-                }
-            )
-            .then((mol) => {
-                return this.createExporter().render(mol)
-            })
+    async createActualAnswerList() {
+        const images = this.props.actualAnswers.map(answer => this.createExporter().render(answer));
+        const structures = this.props.actualAnswers.map(this.saveActualStructuresToSmiles);
 
+        try {
+            const actualAnswerImages = await Promise.all(images);
+            const actualStructures = await Promise.all(structures);
+            this.setState({actualAnswerImages, actualStructures});
+        } catch(e) {console.log(e)}
+    }
+
+    async convertAnswers(excercise, saveStructure) {
+        const response = await axios({
+            method: 'post',
+            url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
+            data: {
+                "structure": excercise.answer,
+                "parameters": "mol"
+            }
         });
+        saveStructure(response.data.structure);
+        return this.createExporter().render(response.data.structure);
+    }
 
-        Promise.all(promises)
-        .then(values => {
+    async createExpectedAnswerList() {
+        try {
+            const promises = this.props.exercises.map(excercise => this.convertAnswers(excercise, () => {}));
+            const values = await Promise.all(promises);
             this.setState({expectedAnswerImages: values});
-        })
-        .catch(e => console.log(e));
+        } catch(e) {console.log(e)}
     }
 
     createExporter() {
-        // var inputFormat = $("input[type='radio'][name='inputFormat']:checked").val();
-        // if(inputFormat == "") {
-        //     inputFormat = null;
-        // }
-        // var defaultServices = getDefaultServices();
-        // var services = {};
-        // services['molconvertws'] = defaultServices['molconvertws'];
-        // if($('#chbx-calcStereo').is(":checked")) {
-        //     services['stereoinfows'] = defaultServices['stereoinfows']; // enable stereo calculation
-        // }
         var params = {
-                'imageType': 'image/svg', // type of output image
-                'inputFormat': 'mol' // renderer will expect molecule source in this format
-                // 'services': services // to resolve any molecule format and be able to calculate stereo info
+            'imageType': 'image/svg', // type of output image
+            'inputFormat': 'mol' // renderer will expect molecule source in this format
         }
         return new this.marvinJSNameSpace.ImageExporter(params);
     }
 };
+
+Finish.propTypes = {
+    exercises: PropTypes.arrayOf(PropTypes.shape({
+        answer: PropTypes.string.isRequired,
+        question: PropTypes.string.isRequired
+    }).isRequired).isRequired,
+    actualAnswers: PropTypes.arrayOf(PropTypes.string).isRequired
+}
