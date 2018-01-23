@@ -5,6 +5,7 @@ require('./marvinjs_launcher');
 require('./Home.scss');
 import Promise from 'es6-promise';
 import Button from 'material-ui/Button';
+import axios from 'axios';
 
 export default class Home extends React.Component {
     constructor() {
@@ -42,7 +43,11 @@ export default class Home extends React.Component {
                 marvinNameSpace.onReady(() => {
                     this.marvinJSNameSpace = marvinNameSpace;
                     console.log('marvin js ready');
+
+                    this.forceUpdate();
                 });
+
+                this.importIntoMarvinJS(this.getCurrentStarter());
                 // marvinNameSpace.Sketch.license(this.licenseUrl);
             },
             (error) => {
@@ -51,10 +56,15 @@ export default class Home extends React.Component {
         );
     }
 
+    componentDidUpdate() {
+        this.importIntoMarvinJS(this.getCurrentStarter());
+    }
+
     render() {
         //console.log(this.props.studysets)
         return (
-            this.props.studysets.length > 0 ?  
+            this.props.studysets.length > 0 ?
+            
                 <div>
                     <h3>{this.props.studysets[0].exercises[this.state.questionIndex].question}</h3>
                     <div className='marvin-js-wrapper'
@@ -89,5 +99,34 @@ export default class Home extends React.Component {
                 this.marvinJSNameSpace.sketcherInstance.clear();
             }
         });
+    }
+
+    getCurrentStarter() {
+        if (this.props.studysets.length == 0) {
+            return null;
+        }
+        return this.props.studysets[0].exercises[this.state.questionIndex].starter
+    }
+
+    importIntoMarvinJS(smiles) {
+        // const starter = this.props.studysets[0].exercises[this.state.questionIndex].question;
+        if (smiles && this.marvinJSNameSpace) {
+            axios({
+                method: 'post',
+                url: 'https://bioreg-demo.chemaxon.com/webservices-ws/rest-v0/util/calculate/molExport',
+                data: {
+                    "structure": smiles,
+                    "parameters": "mol"
+                }
+            })
+            .then(
+                (response) => {
+                    this.marvinJSNameSpace.sketcherInstance.importStructure('mol', response.data.structure)
+                }
+            )
+            .catch(e => {
+                console.log(e);
+            })
+        }
     }
 }
