@@ -12,7 +12,8 @@ export default class Home extends React.Component {
         super();
         this.state = {
             questionIndex: 0,
-            answers: []
+            answers: [],
+            workouts: []
         };
         this.next = this.next.bind(this);
         
@@ -61,7 +62,6 @@ export default class Home extends React.Component {
     }
 
     render() {
-        //console.log(this.props.studysets)
         return (
             this.props.studysets.length > 0 ?
             
@@ -85,6 +85,9 @@ export default class Home extends React.Component {
                 </div>                    
         );
     }
+
+    
+
 
     next() {
         this.marvinJSNameSpace.sketcherInstance.exportStructure('mol').then(answer => {

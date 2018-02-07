@@ -3,13 +3,15 @@ import { Route } from 'react-router';
 import Home from './Home';
 import Finish from './Finish';
 import Results from './Results';
+import axios from 'axios';
 
 export default class Container extends React.Component {
     constructor() {
         super();
         this.state = {
             actualAnswers: [],
-            studysets: []
+            studysets: [],
+            workouts: []
         }
         this.finish = this.finish.bind(this);
     }
@@ -18,7 +20,7 @@ export default class Container extends React.Component {
         fetch('/studysets')
             .then(res => res.json())
             .then(studysets => this.setState({ studysets}));
-        console.log("study sets: ", this.state.studysets);    
+        console.log("study sets: ", this.state.studysets);   
     }
 
     render() {
@@ -31,9 +33,27 @@ export default class Container extends React.Component {
         );
     }
 
+    submitStudySet(answers) {  
+        axios({
+            method: 'post',
+            url: '/workouts',
+            data: {
+                author: 'Erika',
+                studyset: this.state.studysets[0]._id,
+                answers: answers
+            }
+        }).catch(e => { console.log(e); });
+        /**/
+        fetch('/workouts')
+            .then(res => res.json())
+            .then(workouts => this.setState({ workouts})); 
+    }
+
     finish(answers) {
+        this.submitStudySet(answers);
         this.setState({
             actualAnswers: answers
         });
+        console.log("actual answers: ", this.state.actualAnswers);
     }
 };
