@@ -19,6 +19,10 @@ var studysetRouter = require('./routes/studysetRouter');
 const Studysets = require('./models/Studysets');
 app.use('/studysets', studysetRouter);
 
+var workoutRouter = require('./routes/workoutRouter');
+const Workouts = require('./models/Workouts');
+app.use('/workouts', workoutRouter);
+
 //live api documentation with Swagger - available at /apidoc
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
