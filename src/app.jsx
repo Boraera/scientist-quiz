@@ -17,7 +17,5 @@ const questions = [
 
 
 render((
-    <BrowserRouter>
-        <Container></Container>
-    </BrowserRouter>
+    <Container></Container>
   ), document.getElementById('root'))

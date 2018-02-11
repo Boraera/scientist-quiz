@@ -71,6 +71,10 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/../index.html'));
 });
 
+app.get('/studyset', function (req, res) {
+    res.sendFile(path.join(__dirname + '/../index.html'));
+});
+
 //start
 app.listen(process.env.PORT, function () {
     console.log('ChemAxon Synergy integration demo app is running on '+process.env.URL)
