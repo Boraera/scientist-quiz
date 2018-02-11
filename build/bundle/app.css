@@ -21,3 +21,6 @@ iframe[name='marvin-hidden'] {
 
 .row-incorrect {
   background: lightcoral; }
+
+.row-basic {
+  background: lightgrey; }

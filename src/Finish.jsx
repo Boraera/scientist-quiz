@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import axios from 'axios';
+import Button from 'material-ui/Button';
 require('./Finish.scss');
 
 export default class Finish extends React.Component {
@@ -16,6 +17,7 @@ export default class Finish extends React.Component {
             expectedAnswerImages: null
         };
         this.isCorrect = this.isCorrect.bind(this);
+        this.next = this.next.bind(this); 
     }
 
     componentDidMount() {
@@ -51,32 +53,68 @@ export default class Finish extends React.Component {
         return (
             <div>
                 <div ref={(element) => this.wrapper = element}></div>
+                <h3>{this.props.title}</h3>
+                { this.props.submitted ? <h4>Result score: {this.calculateScore()} / {this.props.exercises.length}</h4> : null }
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell>Question</TableCell>
                             <TableCell>Your answer</TableCell>
-                            <TableCell>Correct answer</TableCell>
-                            <TableCell>Result</TableCell>
+                            <TableCell>{this.props.submitted ? "Correct answer" : null}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {this.props.exercises.map((exercise, index) => (
-                            <TableRow key={index} className={this.isCorrect(index) ? 'row-correct' : 'row-incorrect'}>
+                            <TableRow key={index} className={this.calculateColor(index)}>
                                 <TableCell>{exercise.question}</TableCell>
                                 <TableCell>{this.state.actualAnswerImages  ? <div dangerouslySetInnerHTML={{__html: this.state.actualAnswerImages[index]}}></div> : null}</TableCell>
-                                <TableCell>{this.state.expectedAnswerImages ? <div dangerouslySetInnerHTML={{__html: this.state.expectedAnswerImages[index]}}></div> : null}</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>
+                                    {this.state.expectedAnswerImages && this.props.submitted ? <div dangerouslySetInnerHTML={{__html: this.state.expectedAnswerImages[index]}}></div> : null} 
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+                {
+                this.props.submitted ? null :
+                <div style={{float: 'right', margin: 20}}>
+                        <Button raised color="primary" onClick={this.next}>Submit
+                    </Button>
+                </div>
+                }
             </div>
         )
     }
 
+    next() {
+        this.props.finish(this.props.actualAnswers, true, this.calculateScore());
+    }
+
     isCorrect(index) {
         return this.state.actualStructures && this.state.actualStructures[index] === this.props.exercises[index].answer;
+    }
+
+
+    calculateColor(index){
+        if ( this.props.submitted ){
+            return this.isCorrect(index) ? 'row-correct' : 'row-incorrect';
+        } else{
+            return 'row-basic';
+        }
+    }
+      
+
+    calculateScore(){
+        var i;
+        var score =0;
+        if ( this.state.actualStructures ){
+            for (i = 0; i < this.state.actualStructures.length; i++) {
+                if (this.state.actualStructures[i] === this.props.exercises[i].answer) { 
+                    score++;
+                }
+            }
+        }
+        return score;
     }
 
     async saveActualStructuresToSmiles(answer) {
@@ -137,5 +175,7 @@ Finish.propTypes = {
         answer: PropTypes.string.isRequired,
         question: PropTypes.string.isRequired
     }).isRequired).isRequired,
-    actualAnswers: PropTypes.arrayOf(PropTypes.string).isRequired
+    actualAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    submitted: PropTypes.bool.isRequired,
+    title: PropTypes.string
 }

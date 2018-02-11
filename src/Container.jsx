@@ -11,7 +11,8 @@ export default class Container extends React.Component {
         this.state = {
             actualAnswers: [],
             studysets: [],
-            workouts: []
+            workouts: [],
+            submitted: false
         }
         this.finish = this.finish.bind(this);
     }
@@ -27,30 +28,30 @@ export default class Container extends React.Component {
         return (
             <div>
                 {this.state.actualAnswers.length ?
-                 <Finish exercises={this.state.studysets[0].exercises} actualAnswers={this.state.actualAnswers} ></Finish> :
+                 <Finish title={this.state.studysets[0].name} exercises={this.state.studysets[0].exercises} actualAnswers={this.state.actualAnswers} submitted={this.state.submitted} finish={this.finish} ></Finish> : 
                  <Home studysets={this.state.studysets} finish={this.finish} ></Home>}
             </div>
         );
     }
 
-    submitStudySet(answers) {  
+    submitStudySet(answers, score) {  
         axios({
             method: 'post',
             url: '/workouts',
             data: {
                 author: 'Erika',
                 studyset: this.state.studysets[0]._id,
-                answers: answers
+                answers: answers,
+                score: score
             }
         }).catch(e => { console.log(e); });
-        /**/
-        fetch('/workouts')
-            .then(res => res.json())
-            .then(workouts => this.setState({ workouts})); 
-    }
+   }
 
-    finish(answers) {
-        this.submitStudySet(answers);
+    finish(answers, submit, score) {
+        if (submit){
+            this.submitStudySet(answers, score);
+            this.state.submitted = true;
+        }
         this.setState({
             actualAnswers: answers
         });
