@@ -15,8 +15,7 @@ export default class Home extends React.Component {
             answers: [],
             workouts: []
         };
-        this.next = this.next.bind(this);
-        
+        this.next = this.next.bind(this);   
     }
 
     componentDidMount() {
@@ -64,7 +63,6 @@ export default class Home extends React.Component {
     render() {
         return (
             this.props.studysets.length > 0 ?
-            
                 <div>
                     <h3>{this.props.studysets[0].exercises[this.state.questionIndex].question}</h3>
                     <div className='marvin-js-wrapper'
@@ -72,7 +70,7 @@ export default class Home extends React.Component {
                     </div>
                     <div style={{float: 'right', margin: 20}}>
                         <Button raised color="primary" onClick={this.next}>
-                        {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Submit'}
+                        {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Finish'}
                         </Button>
                     </div>
                 </div>
@@ -93,7 +91,7 @@ export default class Home extends React.Component {
         this.marvinJSNameSpace.sketcherInstance.exportStructure('mol').then(answer => {
             let answers = this.state.answers.concat([answer]);
             if (this.state.questionIndex === this.props.studysets[0].exercises.length - 1) {
-                this.props.finish(answers);
+                this.props.finish(answers, false, 0);
             } else {
                 this.setState({
                     questionIndex: this.state.questionIndex + 1,

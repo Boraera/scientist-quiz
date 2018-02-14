@@ -11,7 +11,8 @@ var workoutSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Studyset',
     },
-    answers:[String]
+    answers:[String],
+    score: Number
 }, {
     timestamps: true
 });
