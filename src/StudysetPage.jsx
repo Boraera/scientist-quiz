@@ -12,7 +12,6 @@ export default class StudysetPage extends React.Component {
         super();
         this.state = {
             actualAnswers: [],
-            studysets: [],
             workouts: []
         }
         this.finish = this.finish.bind(this);
@@ -22,8 +21,8 @@ export default class StudysetPage extends React.Component {
         return (
             <div>
                 {this.state.actualAnswers.length ?
-                 <Finish exercises={this.state.studysets[0].exercises} actualAnswers={this.state.actualAnswers} ></Finish> :
-                 <Home studysets={this.state.studysets} finish={this.finish} ></Home>}
+                 <Finish exercises={this.props.studysets[0].exercises} actualAnswers={this.state.actualAnswers} ></Finish> :
+                 <Home studysets={this.props.studysets} finish={this.finish} ></Home>}
             </div>
         );
     }
@@ -34,7 +33,7 @@ export default class StudysetPage extends React.Component {
             url: '/workouts',
             data: {
                 author: 'Erika',
-                studyset: this.state.studysets[0]._id,
+                studyset: this.props.studysets[0]._id,
                 answers: answers
             }
         }).catch(e => { console.log(e); });
