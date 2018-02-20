@@ -14,9 +14,11 @@ export default class Finish extends React.Component {
             images: null,
             actualStructures: null,
             actualAnswerImages: null,
-            expectedAnswerImages: null
+            expectedAnswerImages: null,
+            isCorrectStructure: null
         };
         this.isCorrect = this.isCorrect.bind(this);
+        this.calculateScore = this.calculateScore.bind(this);
         this.next = this.next.bind(this); 
     }
 
@@ -86,18 +88,40 @@ export default class Finish extends React.Component {
         )
     }
 
-    next() {
-        this.props.finish(this.props.actualAnswers, true, this.calculateScore());
+    async next() {
+        var index;
+        var promises = [];
+        for(index=0; index < this.props.exercises.length; index++){
+            const response = this.isCorrect(index);
+            console.log("isCorrect promise:", response);
+            response.then(function (value)  {
+                console.log("isCorrect value:", value);
+            });
+            promises[index] = response;
+        }
+        const values = await Promise.all(promises);
+        this.setState({isCorrectStructure: values});
+        this.props.finish(this.props.actualAnswers, true, this.calculateScore(), values);
     }
 
-    isCorrect(index) {
-        return this.state.actualStructures && this.state.actualStructures[index] === this.props.exercises[index].answer;
+    async isCorrect(index) {  
+        const response =await axios({
+            method: 'post',
+            url: '/checker',
+            data: {
+                "queryStructure": this.state.actualStructures[index],
+                "targetStructure": this.props.exercises[index].answer, 
+                "searchType": "duplicate" 
+            }
+        })
+        return response.data.duplicate;
     }
-
 
     calculateColor(index){
         if ( this.props.submitted ){
-            return this.isCorrect(index) ? 'row-correct' : 'row-incorrect';
+            if ( this.state.isCorrectStructure ){
+                return this.state.isCorrectStructure[index]==="true" ? 'row-correct' : 'row-incorrect';
+            }
         } else{
             return 'row-basic';
         }
@@ -107,9 +131,9 @@ export default class Finish extends React.Component {
     calculateScore(){
         var i;
         var score =0;
-        if ( this.state.actualStructures ){
+        if ( this.state.actualStructures  ){
             for (i = 0; i < this.state.actualStructures.length; i++) {
-                if (this.state.actualStructures[i] === this.props.exercises[i].answer) { 
+                if (this.state.isCorrectStructure[i]==="true") { 
                     score++;
                 }
             }

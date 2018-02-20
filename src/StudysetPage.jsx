@@ -28,30 +28,27 @@ export default class StudysetPage extends React.Component {
         );
     }
 
-    submitStudySet(answers) {
+    submitStudySet(answers, score, isCorrect) {  
         axios({
             method: 'post',
             url: '/workouts',
             data: {
                 author: 'Erika',
                 studyset: this.props.studysets[0]._id,
-                answers: answers
+                answers: answers,
+                score: score,
+                isCorrect: isCorrect
             }
         }).catch(e => { console.log(e); });
-        /**/
-        fetch('/workouts')
-            .then(res => res.json())
-            .then(workouts => this.setState({ workouts}));
-    }
+   }
 
-    finish(answers, submit, score) {
+    finish(answers, submit, score, isCorrect) {
         if (submit){
-            this.submitStudySet(answers, score);
+            this.submitStudySet(answers, score, isCorrect);
             this.state.submitted = true;
         }
         this.setState({
             actualAnswers: answers
         });
-        console.log("actual answers: ", this.state.actualAnswers);
     }
 }
