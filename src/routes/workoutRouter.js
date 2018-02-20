@@ -22,7 +22,6 @@ workoutRouter.route('/')
 .post((req, res, next) => {
     Workouts.create(req.body)
     .then((workout) => {
-        console.log('Workout Created ', workout);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(workout);

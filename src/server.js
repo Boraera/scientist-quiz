@@ -19,6 +19,9 @@ var studysetRouter = require('./routes/studysetRouter');
 const Studysets = require('./models/Studysets');
 app.use('/studysets', studysetRouter);
 
+var checkerRouter = require('./routes/checkerRouter');
+app.use('/checker', checkerRouter);
+
 var workoutRouter = require('./routes/workoutRouter');
 const Workouts = require('./models/Workouts');
 app.use('/workouts', workoutRouter);

@@ -12,6 +12,7 @@ var workoutSchema = new Schema({
         ref: 'Studyset',
     },
     answers:[String],
+    isCorrect:[Boolean], 
     score: Number
 }, {
     timestamps: true

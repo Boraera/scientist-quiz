@@ -20,8 +20,7 @@ export default class Container extends React.Component {
     componentDidMount() {      
         fetch('/studysets')
             .then(res => res.json())
-            .then(studysets => this.setState({ studysets}));
-        console.log("study sets: ", this.state.studysets);   
+            .then(studysets => this.setState({ studysets}));   
     }
 
     render() {
@@ -34,7 +33,7 @@ export default class Container extends React.Component {
         );
     }
 
-    submitStudySet(answers, score) {  
+    submitStudySet(answers, score, isCorrect) {  
         axios({
             method: 'post',
             url: '/workouts',
@@ -42,19 +41,19 @@ export default class Container extends React.Component {
                 author: 'Erika',
                 studyset: this.state.studysets[0]._id,
                 answers: answers,
-                score: score
+                score: score,
+                isCorrect: isCorrect
             }
         }).catch(e => { console.log(e); });
    }
 
-    finish(answers, submit, score) {
+    finish(answers, submit, score, isCorrect) {
         if (submit){
-            this.submitStudySet(answers, score);
+            this.submitStudySet(answers, score, isCorrect);
             this.state.submitted = true;
         }
         this.setState({
             actualAnswers: answers
         });
-        console.log("actual answers: ", this.state.actualAnswers);
     }
 };
