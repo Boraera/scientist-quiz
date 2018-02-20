@@ -98,7 +98,6 @@ export default class Finish extends React.Component {
                 console.log("isCorrect value:", value);
             });
             promises[index] = response;
-
         }
         const values = await Promise.all(promises);
         this.setState({isCorrectStructure: values});

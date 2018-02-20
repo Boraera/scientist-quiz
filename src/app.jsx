@@ -5,7 +5,5 @@ import { BrowserRouter } from 'react-router-dom'
 
 
 render((
-    <BrowserRouter>
-        <Container></Container>
-    </BrowserRouter>
+    <Container></Container>
   ), document.getElementById('root'))
