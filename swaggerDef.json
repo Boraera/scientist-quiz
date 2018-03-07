@@ -1,7 +1,0 @@
-{
-    "swagger": "2.0",
-    "info": {
-        "title": "Chemaxon Synergy integration with Node.js",
-        "version": "1.0.0"
-    }
-}
