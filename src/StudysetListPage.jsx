@@ -9,7 +9,7 @@ export default class StudysetListPage extends React.Component {
     render() {
         const rows = this.props.studysets.map(studyset => {
             return (
-                <TableRow>
+                <TableRow key = {studyset._id}>
                     <TableCell>
                         <NavLink 
                             to = {`/studyset/${studyset._id}`}

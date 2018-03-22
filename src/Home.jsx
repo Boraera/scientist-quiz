@@ -21,7 +21,7 @@ export default class Home extends React.Component {
     componentDidMount() {
         let sketcherAttributes = {
             id: 1,
-            src: '/marvinjs/editor.html',
+            src: '../marvinjs/editor.html',
             name: 'marvin',
             'data-toolbars': 'markush'
         };
@@ -69,7 +69,7 @@ export default class Home extends React.Component {
                         ref={(element) => this.wrapper = element}>
                     </div>
                     <div style={{float: 'right', margin: 20}}>
-                        <Button raised color="primary" onClick={this.next}>
+                        <Button raise="true" color="primary" onClick={this.next}>
                         {(this.state.questionIndex < this.props.studysets[0].exercises.length-1) ? 'Next' : 'Finish'}
                         </Button>
                     </div>
