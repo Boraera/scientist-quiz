@@ -52,15 +52,13 @@ export default class Container extends React.Component {
             <BrowserRouter>
                 <div>
                     <Reboot />
-                    <Route exact path="/" render={(props) => (
+                    <Route exact path='/' render={(props) => (
                         <React.Fragment>
                             {this.renderAppBar()}
                             <StudysetListPage {...props} studysets={this.state.studysets}/>
                         </React.Fragment>
                     )}/>
-                    <Route path="/studyset" render={(props) => (
-                        <StudysetPage {...props} studysets={this.state.studysets}/>
-                    )}/>
+                    <Route path = '/studyset/:id' render = {props => <StudysetPage {...props} studysets={this.state.studysets}/>}/>
                 </div>
             </BrowserRouter>
         );

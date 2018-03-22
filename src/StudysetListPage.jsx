@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link, NavLink} from 'react-router-dom';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 
 /**
@@ -9,7 +10,12 @@ export default class StudysetListPage extends React.Component {
         const rows = this.props.studysets.map(studyset => {
             return (
                 <TableRow>
-                    <TableCell>{studyset.name}</TableCell>
+                    <TableCell>
+                        <NavLink 
+                            to = {`/studyset/${studyset._id}`}
+                            style={{ color: 'inherit', textDecoration: 'none', width: '100%'}}
+                        >{studyset.name}</NavLink>
+                    </TableCell>
                     <TableCell numeric>{studyset.exercises.length}</TableCell>
                 </TableRow>
             )

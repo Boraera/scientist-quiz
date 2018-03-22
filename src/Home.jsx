@@ -21,7 +21,7 @@ export default class Home extends React.Component {
     componentDidMount() {
         let sketcherAttributes = {
             id: 1,
-            src: 'marvinjs/editor.html',
+            src: '/marvinjs/editor.html',
             name: 'marvin',
             'data-toolbars': 'markush'
         };

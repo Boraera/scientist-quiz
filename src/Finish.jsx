@@ -25,7 +25,7 @@ export default class Finish extends React.Component {
     componentDidMount() {
         const sketcherAttributes = {
             id: 2,
-            src: 'marvinjs/editor.html',
+            src: '../marvinjs/editor.html',
             name: 'marvin-hidden',
             'data-toolbars': 'markush'
         };
