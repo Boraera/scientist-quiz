@@ -24,7 +24,7 @@ export default class StudysetPage extends React.Component {
         return (
             <div>
                 {this.state.actualAnswers.length ?
-                <Finish title={this.findActualStudySet().name} exercises={findActualStudySet().exercises} actualAnswers={this.state.actualAnswers} submitted={this.state.submitted} finish={this.finish} ></Finish> : 
+                <Finish title={this.findActualStudySet().name} exercises={this.findActualStudySet().exercises} actualAnswers={this.state.actualAnswers} submitted={this.state.submitted} finish={this.finish} ></Finish> : 
                 <Home studyset={this.findActualStudySet()} finish={this.finish} ></Home>}
             </div>
         );
