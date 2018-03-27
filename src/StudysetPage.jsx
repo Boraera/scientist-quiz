@@ -3,6 +3,7 @@ import Home from './Home';
 import Finish from './Finish';
 import Results from './Results';
 import axios from 'axios';
+import {find, propEq} from 'ramda';
 
 /**
  * This component represents the studyset the user is currently working on
@@ -19,11 +20,12 @@ export default class StudysetPage extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div>
                 {this.state.actualAnswers.length ?
-                <Finish title={this.props.studysets[0].name} exercises={this.props.studysets[0].exercises} actualAnswers={this.state.actualAnswers} submitted={this.state.submitted} finish={this.finish} ></Finish> : 
-                <Home studysets={this.props.studysets} finish={this.finish} ></Home>}
+                <Finish title={this.findActualStudySet().name} exercises={findActualStudySet().exercises} actualAnswers={this.state.actualAnswers} submitted={this.state.submitted} finish={this.finish} ></Finish> : 
+                <Home studyset={this.findActualStudySet()} finish={this.finish} ></Home>}
             </div>
         );
     }
@@ -34,7 +36,7 @@ export default class StudysetPage extends React.Component {
             url: '/workouts',
             data: {
                 author: 'Erika',
-                studyset: this.props.studysets[0]._id,
+                studyset: this.findActualStudySet()._id,
                 answers: answers,
                 score: score,
                 isCorrect: isCorrect
@@ -51,4 +53,8 @@ export default class StudysetPage extends React.Component {
             actualAnswers: answers
         });
     }
-}
+
+    findActualStudySet() {
+        return find(propEq('_id', this.props.match.params.id))(this.props.studysets);
+    }
+ }
